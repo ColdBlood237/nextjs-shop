@@ -34,3 +34,8 @@ export const SelectedCategoryContext = createContext({
   selectedCategory: "none",
   setSelectedCategory: () => {},
 });
+
+export const ProductIdContext = createContext({
+  productId: 0,
+  setProductId: () => {},
+});

@@ -6,6 +6,7 @@ import {
   BeatsProductsContext,
   GoogleProductsContext,
   PriceOrderContext,
+  ProductIdContext,
   ProductsContext,
   SamsungProductsContext,
   SelectedCategoryContext,
@@ -19,6 +20,7 @@ export default function Providers({ children }) {
   const [samsungProducts, setSamsungProducts] = useState([]);
   const [priceOrder, setPriceOrder] = useState("desc");
   const [selectedCategory, setSelectedCategory] = useState("none");
+  const [productId, setProductId] = useState(0);
 
   return (
     <ProductsContext.Provider value={{ products, setProducts }}>
@@ -34,7 +36,9 @@ export default function Providers({ children }) {
                 <SelectedCategoryContext.Provider
                   value={{ selectedCategory, setSelectedCategory }}
                 >
-                  {children}
+                  <ProductIdContext.Provider value={{ productId, setProductId }}>
+                    {children}
+                  </ProductIdContext.Provider>
                 </SelectedCategoryContext.Provider>
               </PriceOrderContext.Provider>
             </SamsungProductsContext.Provider>

@@ -3,7 +3,19 @@ import { useDispatch } from "react-redux";
 import { setSelectedCategory } from "../redux/selectedCategorySlice";
 import Link from "next/link";
 
-export default function Category({ name, products }) {
+export default function Category({
+  name,
+  products,
+}: {
+  name: string;
+  products: {
+    id: number;
+    name: string;
+    image: string;
+    description: string;
+    price: number;
+  }[];
+}) {
   const dispatch = useDispatch();
 
   return (

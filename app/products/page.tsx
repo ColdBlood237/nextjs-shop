@@ -1,38 +1,69 @@
 "use client";
 
-import { useDispatch } from "react-redux";
-import Navbar from "../components/Navbar";
-import { useSelector } from "react-redux";
-import { switchPriceOrder } from "../lib/features/priceOrder/priceOrderSlice";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
-  sortByPriceAscending,
-  sortByPriceDescending,
-} from "../lib/features/products/productsSlice";
-import { setSelectedCategory } from "../lib/features/selectedCategory/selectedCategorySlice";
+  PriceOrderContext,
+  ProductsContext,
+  SelectedCategoryContext,
+} from "../context/Contexts";
+import ProductCard from "../components/ProductCard";
 
 export default function Products() {
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.products.products);
-  const priceOrder = useSelector((state) => state.priceOrder.priceOrder);
-  const selectedCategory = useSelector(
-    (state) => state.selectedCategory.selectedCategory
+  const { products, setProducts } = useContext(ProductsContext);
+  const { priceOrder, setPriceOrder } = useContext(PriceOrderContext);
+  const { selectedCategory, setSelectedCategory } = useContext(
+    SelectedCategoryContext
   );
   const [selectedOrder, setSelectedOrder] = useState("dec");
-  // const [selectedCategory, setSelectedCategory] = useState("none");
   const [searchInput, setSearchInput] = useState("");
+
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
 
   function handleRadioChange(e: { [keys: string]: any }) {
     console.log(e.target.value);
     setSelectedOrder(e.target.value);
-    dispatch(switchPriceOrder());
+    setPriceOrder((priceOrder: string) => (priceOrder === "dec" ? "inc" : "dec"));
+  }
+
+  function sortByPriceAscending(): void {
+    // Create a shallow copy of the original array
+    const newArray = products.slice();
+    for (let i = 0; i < newArray.length - 1; i++) {
+      for (let j = 0; j < newArray.length - i - 1; j++) {
+        if (newArray[j].price > newArray[j + 1].price) {
+          // Swap the elements
+          let temp = newArray[j];
+          newArray[j] = newArray[j + 1];
+          newArray[j + 1] = temp;
+        }
+      }
+    }
+    setProducts(newArray);
+  }
+
+  function sortByPriceDescending(): void {
+    // Create a shallow copy of the original array
+    const newArray = products.slice();
+    for (let i = 0; i < newArray.length - 1; i++) {
+      for (let j = 0; j < newArray.length - i - 1; j++) {
+        if (newArray[j]?.price < newArray[j + 1]?.price) {
+          // Swap the elements
+          let temp = newArray[j];
+          newArray[j] = newArray[j + 1];
+          newArray[j + 1] = temp;
+        }
+      }
+    }
+    setProducts(newArray);
   }
 
   useEffect(() => {
     if (priceOrder === "inc") {
-      dispatch(sortByPriceAscending());
+      sortByPriceAscending();
     } else {
-      dispatch(sortByPriceDescending());
+      sortByPriceDescending();
     }
   }, [priceOrder]);
 
@@ -71,11 +102,9 @@ export default function Products() {
       <select
         className="select select-bordered w-full max-w-xs mb-8"
         value={selectedCategory}
-        onChange={(e) => dispatch(setSelectedCategory(e.target.value))}
+        onChange={(e) => setSelectedCategory(e.target.value)}
       >
-        <option value="none" disabled>
-          ---
-        </option>
+        <option value="none">---</option>
         <option value="Google">Google</option>
         <option value="Apple">Apple</option>
         <option value="Samsung">Samsung</option>
@@ -103,7 +132,7 @@ export default function Products() {
         </svg>
       </label>
       <div className="mx-auto flex flex-wrap justify-around">
-        {selectedCategory === "none"
+        {products[0] !== undefined && selectedCategory === "none"
           ? products
               .filter(
                 (product: {
@@ -113,7 +142,7 @@ export default function Products() {
                   image: string;
                   price: number;
                 }) =>
-                  product.name
+                  product?.name
                     .toLowerCase()
                     .includes(searchInput.toLowerCase().trim())
               )
@@ -124,25 +153,7 @@ export default function Products() {
                   description: string;
                   image: string;
                   price: number;
-                }) => (
-                  <div
-                    key={product.id}
-                    className="card mb-8 w-96 bg-base-100 shadow-xl"
-                  >
-                    <figure>
-                      <img className="w-24" src={product.image} alt="Shoes" />
-                    </figure>
-                    <div className="card-body">
-                      <h2 className="card-title">{product.name}</h2>
-                      <p>{product.description}</p>
-                      <div className="card-actions justify-end">
-                        <button className="btn btn-primary">
-                          {product.price} €
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )
+                }) => <ProductCard key={product.id} product={product} />
               )
           : products
               .filter(
@@ -152,7 +163,7 @@ export default function Products() {
                   description: string;
                   image: string;
                   price: number;
-                }) => product.name.startsWith(selectedCategory)
+                }) => product?.name.startsWith(selectedCategory)
               )
               .filter(
                 (product: {
@@ -173,25 +184,7 @@ export default function Products() {
                   description: string;
                   image: string;
                   price: number;
-                }) => (
-                  <div
-                    key={product.id}
-                    className="card mb-8 w-96 bg-base-100 shadow-xl"
-                  >
-                    <figure>
-                      <img className="w-24" src={product.image} alt="Shoes" />
-                    </figure>
-                    <div className="card-body">
-                      <h2 className="card-title">{product.name}</h2>
-                      <p>{product.description}</p>
-                      <div className="card-actions justify-end">
-                        <button className="btn btn-primary">
-                          {product.price} €
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )
+                }) => <ProductCard key={product.id} product={product} />
               )}
       </div>
     </div>

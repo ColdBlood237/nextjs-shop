@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { useContext } from "react";
-import { setSelectedCategory } from "../lib/features/selectedCategory/selectedCategorySlice";
 import Link from "next/link";
 import { SelectedCategoryContext } from "../context/Contexts";
 

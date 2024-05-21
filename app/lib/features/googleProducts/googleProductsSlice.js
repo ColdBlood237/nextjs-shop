@@ -8,7 +8,7 @@ export const googleProductsSlice = createSlice({
   reducers: {
     initializeGoogleProducts: (state, action) => {
       state.googleProducts = action.payload.filter((product) => {
-        return product.name.split(" ")[0] === "Google";
+        return product?.name.split(" ")[0] === "Google";
       });
     },
   },

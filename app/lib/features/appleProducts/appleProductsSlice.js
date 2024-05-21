@@ -8,7 +8,7 @@ export const appleProductsSlice = createSlice({
   reducers: {
     initializeAppleProducts: (state, action) => {
       state.appleProducts = action.payload.filter((product) => {
-        return product.name.split(" ")[0] === "Apple";
+        return product?.name.split(" ")[0] === "Apple";
       });
     },
   },

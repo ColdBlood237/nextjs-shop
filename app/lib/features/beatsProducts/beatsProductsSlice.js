@@ -8,7 +8,7 @@ export const beatsProductsSlice = createSlice({
   reducers: {
     initializeBeatsProducts: (state, action) => {
       state.beatsProducts = action.payload.filter((product) => {
-        return product.name.split(" ")[0] === "Beats";
+        return product?.name.split(" ")[0] === "Beats";
       });
     },
   },

@@ -1,40 +1,21 @@
-import { useEffect } from "react";
-import Navbar from "../components/Navbar";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { fetchProducts } from "../redux/productsSlice";
-import { initializeGoogleProducts } from "../redux/googleProductsSlice";
-import { initializeSamsungProducts } from "../redux/samsungProductsSlice";
-import { initializeAppleProducts } from "../redux/appleProductsSlice";
-import { initializeBeatsProducts } from "../redux/beatsProductsSlice";
-import Category from "../components/Category";
+"use client";
+
+import { useContext, useEffect } from "react";
+import {
+  AppleProductsContext,
+  BeatsProductsContext,
+  GoogleProductsContext,
+  ProductsContext,
+  SamsungProductsContext,
+} from "./context/Contexts";
+import Category from "./components/Category";
 
 export default function Homepage() {
-  const products = useSelector((state) => state.products.products);
-  const productsStatus = useSelector((state) => state.products.status);
-  const googleProducts = useSelector((state) => state.googleProducts.googleProducts);
-  const samsungProducts = useSelector(
-    (state) => state.samsungProducts.samsungProducts
-  );
-  const appleProducts = useSelector((state) => state.appleProducts.appleProducts);
-  const beatsProducts = useSelector((state) => state.beatsProducts.beatsProducts);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (productsStatus === "idle") {
-      dispatch(fetchProducts());
-    }
-
-    dispatch(initializeGoogleProducts(products));
-    dispatch(initializeSamsungProducts(products));
-    dispatch(initializeAppleProducts(products));
-    dispatch(initializeBeatsProducts(products));
-
-    // console.log(appleProducts);
-    // console.log(googleProducts);
-    // console.log(samsungProducts);
-    // console.log(beatsProducts);
-  }, [productsStatus, dispatch]);
+  const { products, setProducts } = useContext(ProductsContext);
+  const { appleProducts, setAppleProducts } = useContext(AppleProductsContext);
+  const { beatsProducts, setBeatsProducts } = useContext(BeatsProductsContext);
+  const { googleProducts, setGoogleProducts } = useContext(GoogleProductsContext);
+  const { samsungProducts, setSamsungProducts } = useContext(SamsungProductsContext);
 
   return (
     <div className="text-center">

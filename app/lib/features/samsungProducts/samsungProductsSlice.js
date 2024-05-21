@@ -8,7 +8,7 @@ export const samsungProductsSlice = createSlice({
   reducers: {
     initializeSamsungProducts: (state, action) => {
       state.samsungProducts = action.payload.filter((product) => {
-        return product.name.split(" ")[0] === "Samsung";
+        return product?.name.split(" ")[0] === "Samsung";
       });
     },
   },

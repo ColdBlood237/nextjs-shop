@@ -1,10 +1,15 @@
+"use client";
+
 import { useDispatch } from "react-redux";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
-import { switchPriceOrder } from "../redux/priceOrderSlice";
+import { switchPriceOrder } from "../lib/features/priceOrder/priceOrderSlice";
 import { useEffect, useState } from "react";
-import { sortByPriceAscending, sortByPriceDescending } from "../redux/productsSlice";
-import { setSelectedCategory } from "../redux/selectedCategorySlice";
+import {
+  sortByPriceAscending,
+  sortByPriceDescending,
+} from "../lib/features/products/productsSlice";
+import { setSelectedCategory } from "../lib/features/selectedCategory/selectedCategorySlice";
 
 export default function Products() {
   const dispatch = useDispatch();

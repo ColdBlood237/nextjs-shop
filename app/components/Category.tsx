@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useDispatch } from "react-redux";
-import { setSelectedCategory } from "../redux/selectedCategorySlice";
+import { useContext } from "react";
+import { setSelectedCategory } from "../lib/features/selectedCategory/selectedCategorySlice";
 import Link from "next/link";
+import { SelectedCategoryContext } from "../context/Contexts";
 
 export default function Category({
   name,
@@ -16,7 +17,9 @@ export default function Category({
     price: number;
   }[];
 }) {
-  const dispatch = useDispatch();
+  const { selectedCategory, setSelectedCategory } = useContext(
+    SelectedCategoryContext
+  );
 
   return (
     <div className="card w-96 bg-base-100 shadow-xl mb-6">
@@ -28,7 +31,7 @@ export default function Category({
           ))}
         </ul>
         <div className="card-actions justify-end">
-          <Link href="/products" onClick={dispatch(setSelectedCategory(name))}>
+          <Link href="/products" onClick={() => setSelectedCategory(name)}>
             <button className="btn btn-primary">See All</button>
           </Link>
         </div>

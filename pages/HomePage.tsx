@@ -1,21 +1,37 @@
 "use client";
 
-import Link from "next/link";
-import React, { ReactNode, useContext, useEffect, useState } from "react";
-import {
-  AppleProductsContext,
-  BeatsProductsContext,
-  GoogleProductsContext,
-  ProductsContext,
-  SamsungProductsContext,
-} from "../context/Contexts";
+import Category from "@/components/Category";
+import React, { useEffect, useState } from "react";
 
-export default function Navbar({ children }: any) {
-  const { products, setProducts } = useContext(ProductsContext);
-  const { appleProducts, setAppleProducts } = useContext(AppleProductsContext);
-  const { beatsProducts, setBeatsProducts } = useContext(BeatsProductsContext);
-  const { googleProducts, setGoogleProducts } = useContext(GoogleProductsContext);
-  const { samsungProducts, setSamsungProducts } = useContext(SamsungProductsContext);
+export default function Home({ data }: { data: any }) {
+  const [products, setProducts] = useState<any>([]);
+  const [appleProducts, setAppleProducts] = useState([]);
+  const [beatsProducts, setBeatsProducts] = useState([]);
+  const [googleProducts, setGoogleProducts] = useState([]);
+  const [samsungProducts, setSamsungProducts] = useState([]);
+
+  function setCategories() {
+    setAppleProducts(
+      data.filter((product: any) => {
+        return product?.name.split(" ")[0] === "Apple";
+      })
+    );
+    setBeatsProducts(
+      data.filter((product: any) => {
+        return product?.name.split(" ")[0] === "Beats";
+      })
+    );
+    setGoogleProducts(
+      data.filter((product: any) => {
+        return product?.name.split(" ")[0] === "Google";
+      })
+    );
+    setSamsungProducts(
+      data.filter((product: any) => {
+        return product?.name.split(" ")[0] === "Samsung";
+      })
+    );
+  }
 
   function fillMissingData() {
     const productsInfo = [
@@ -81,7 +97,7 @@ export default function Navbar({ children }: any) {
       },
     ];
 
-    setProducts((products) =>
+    setProducts((products: any) =>
       products.map((product: { [key: string]: any }, index: number) => {
         return {
           ...product,
@@ -94,67 +110,51 @@ export default function Navbar({ children }: any) {
   }
 
   useEffect(() => {
-    async function fetchProducts() {
-      const response = await fetch(
-        "https://663ce76017145c4d8c381f97.mockapi.io/products"
-      ); // change back later
-      const data = await response.json();
-      setProducts(data);
-      setAppleProducts(
-        data.filter((product) => {
-          return product?.name.split(" ")[0] === "Apple";
-        })
-      );
-      setBeatsProducts(
-        data.filter((product) => {
-          return product?.name.split(" ")[0] === "Beats";
-        })
-      );
-      setGoogleProducts(
-        data.filter((product) => {
-          return product?.name.split(" ")[0] === "Google";
-        })
-      );
-      setSamsungProducts(
-        data.filter((product) => {
-          return product?.name.split(" ")[0] === "Samsung";
-        })
-      );
-    }
-    fetchProducts();
+    setProducts(data);
+    setCategories();
   }, []);
 
   useEffect(() => {
+    console.log(appleProducts);
     if (
       products.length !== 0 &&
       products[0] !== undefined &&
       products[0].price === undefined
     ) {
       fillMissingData();
-      console.log(products);
     }
   }, [products]);
 
   return (
-    <>
-      <div className="navbar bg-base-100">
-        <div className="flex-1">
-          <Link className="btn btn-ghost text-xl" href="/">
-            NoLogo
-          </Link>
-        </div>
-        <div className="flex-none">
-          <ul className="menu menu-horizontal px-1">
-            <li>
-              <Link href="/">home page</Link>
-            </li>
-            <li>
-              <Link href="/products">products</Link>
-            </li>
-          </ul>
-        </div>
+    <div className="text-center">
+      <h1 className="text-3xl font-bold mb-8">Home page</h1>
+      <h2 className="text-2xl mb-6">categories: </h2>
+      <div className="flex flex-wrap justify-around">
+        <Category
+          name="Google"
+          categoryProducts={googleProducts}
+          products={products}
+          setProducts={setProducts}
+        />
+        <Category
+          name="Apple"
+          categoryProducts={appleProducts}
+          products={products}
+          setProducts={setProducts}
+        />
+        <Category
+          name="Beats"
+          categoryProducts={beatsProducts}
+          products={products}
+          setProducts={setProducts}
+        />
+        <Category
+          name="Samsung"
+          categoryProducts={samsungProducts}
+          products={products}
+          setProducts={setProducts}
+        />
       </div>
-      {children}
-    </>
+    </div>
   );
 }

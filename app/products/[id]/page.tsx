@@ -2,7 +2,7 @@
 
 import React, { useContext } from "react";
 import { useState } from "react";
-import { ProductIdContext, ProductsContext } from "@/app/context/Contexts";
+import { ProductIdContext, ProductsContext } from "@/context/Contexts";
 
 export default function ProductDetails({ params }: { params: { id: number } }) {
   // const { productId, setProductId } = useContext(ProductIdContext);

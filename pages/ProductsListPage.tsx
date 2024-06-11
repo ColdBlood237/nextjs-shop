@@ -19,7 +19,6 @@ export default function ProductsListPage({
     useState(selectedCategory);
 
   function handleRadioChange(e: { [keys: string]: any }) {
-    console.log(e.target.value);
     setSelectedOrder(e.target.value);
     setPriceOrder((priceOrder: string) => (priceOrder === "dec" ? "inc" : "dec"));
   }
@@ -150,7 +149,13 @@ export default function ProductsListPage({
                   description: string;
                   image: string;
                   price: number;
-                }) => <ProductCard key={product.id} product={product} />
+                }) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    products={products}
+                  />
+                )
               )
           : productsState
               .filter(
@@ -181,7 +186,13 @@ export default function ProductsListPage({
                   description: string;
                   image: string;
                   price: number;
-                }) => <ProductCard key={product.id} product={product} />
+                }) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    products={products}
+                  />
+                )
               )}
       </div>
     </div>

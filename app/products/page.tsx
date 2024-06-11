@@ -1,9 +1,6 @@
 import ProductsListPage from "@/pages/ProductsListPage";
 
-export default function page(
-  { data }: any,
-  { searchParams }: { searchParams: any }
-) {
+export default function page({ searchParams }: { searchParams: any }) {
   const selectedCategory = searchParams.selectedCategory
     ? searchParams.selectedCategory
     : "none";

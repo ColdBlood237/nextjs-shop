@@ -1,8 +1,17 @@
-import { useContext, useEffect, useState } from "react";
-import Category from "../components/Category";
-import Home from "@/pages/HomePage";
-import RootLayout from "./layout";
+import HomePage from "@/pages/HomePage";
 
-export default async function page({ data }: any) {
-  return <Home data={data} />;
+async function fetchProducts() {
+  const response = await fetch(
+    "https://663ce76017145c4d8c381f97.mockapi.io/products"
+  ); // change back later
+  if (!response.ok) {
+    throw new Error("Failed to fetch products");
+  }
+  return response.json();
+}
+
+export default async function page() {
+  const data = await fetchProducts();
+
+  return <HomePage data={data} />;
 }

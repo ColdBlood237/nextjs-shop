@@ -3,12 +3,33 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function Navbar({ data }: any) {
+async function fetchProducts() {
+  const response = await fetch(
+    "https://663ce76017145c4d8c381f97.mockapi.io/products"
+  ); // change back later
+  if (!response.ok) {
+    throw new Error("Failed to fetch products");
+  }
+  return response.json();
+}
+
+export default function Navbar() {
+  let data: any = [];
   const [products, setProducts] = useState<any>([]);
   const [appleProducts, setAppleProducts] = useState([]);
   const [beatsProducts, setBeatsProducts] = useState([]);
   const [googleProducts, setGoogleProducts] = useState([]);
   const [samsungProducts, setSamsungProducts] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      data = await fetchProducts();
+      console.log(data);
+      setProducts(data);
+    }
+    getData();
+    setCategories();
+  }, []);
 
   function setCategories() {
     setAppleProducts(
@@ -110,12 +131,6 @@ export default function Navbar({ data }: any) {
   }
 
   useEffect(() => {
-    console.log(data);
-    setProducts(data);
-    setCategories();
-  }, []);
-
-  useEffect(() => {
     if (
       products.length !== 0 &&
       products[0] !== undefined &&
@@ -143,7 +158,8 @@ export default function Navbar({ data }: any) {
                 href={{
                   pathname: "/products",
                   query: {
-                    products: JSON.stringify(products),
+                    selectedCategory: "none",
+                    products: encodeURIComponent(JSON.stringify(products)),
                   },
                 }}
               >

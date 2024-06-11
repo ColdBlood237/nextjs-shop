@@ -3,14 +3,12 @@
 import Category from "@/components/Category";
 import React, { useEffect, useState } from "react";
 
-export default function Home({ data }: any) {
+export default function HomePage({ data }: any) {
   const [products, setProducts] = useState<any>([]);
   const [appleProducts, setAppleProducts] = useState([]);
   const [beatsProducts, setBeatsProducts] = useState([]);
   const [googleProducts, setGoogleProducts] = useState([]);
   const [samsungProducts, setSamsungProducts] = useState([]);
-
-  console.log(data);
 
   function setCategories() {
     setAppleProducts(
